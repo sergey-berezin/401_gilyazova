@@ -53,7 +53,8 @@ public class Emotion
             {
                 output[keys[i]] = emotions[i];
             }
-            return output;
+            var ordered_out = output.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            return ordered_out;
         }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
     }
 
@@ -78,7 +79,8 @@ public class Emotion
         {
             result[keys[i]] = emotions[i];
         }
-        return result;
+        var ordered = result.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+        return ordered;
     }
         
     private List<NamedOnnxValue> ImageTransform(Image<Rgb24> image){

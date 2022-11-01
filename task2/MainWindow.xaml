@@ -1,0 +1,115 @@
+﻿<Window x:Class="emotions_wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:emotions_wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <local:Converter x:Key="ConverterMetrics2Str" />
+        <Style TargetType="{x:Type Grid}"/>
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding Cancel}" Key="C"/>
+    </Window.InputBindings>
+
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" >
+            <ListBox Name="photos" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding filename}" 
+                                     HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </TextBlock>
+                            <Image Source="{Binding path}" Width="200" Height="200"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Image>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="23*"/>
+                <RowDefinition Height="14*"/>
+            </Grid.RowDefinitions>
+
+
+            <Grid Grid.Row="0" Margin="0,0,0,99">
+                <StackPanel DataContext="{Binding ElementName=photos, Path=SelectedItem}" 
+                            VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding Path=dict, Converter={StaticResource ConverterMetrics2Str}}" FontSize="12"/>
+                </StackPanel>
+            </Grid>
+
+
+            <Grid Grid.Row="1" Margin="0,22,0,-30" Grid.RowSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Margin="0,48,0,48" Grid.RowSpan="2">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Choose a file" x:Name="a" Height="30" Width="180" Click="OpenImage"/>
+                        <Button Content="Load" x:Name="e" Height="30" Width="180" Click="Upload"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,-22,0,51" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Stop" Height="35" Width="70" Command="{Binding Cancel}"/>
+                    <Button Content="Clear" Height="35" Width="70" Command="{Binding Clear, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="1" Background="LightSteelBlue" Height="120" VerticalAlignment="Center" Width="480">
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 7">
+                    <RadioButton Checked="RadioButton_Checked" Content="surpise"  Width="120" IsChecked="{Binding possible_emotions[0], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="25,0,30,0" FontSize="15"/>
+                    <RadioButton Checked="RadioButton_Checked" Content="sadness" Width="120" IsChecked="{Binding possible_emotions[1], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="0,0,5,0" FontSize="15"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 7">
+                    <RadioButton Checked="RadioButton_Checked" Content="happiness"  Width="120" IsChecked="{Binding possible_emotions[2], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="25,0,30,0" FontSize="15"/>
+                    <RadioButton Checked="RadioButton_Checked" Content="neutral" Width="120" IsChecked="{Binding possible_emotions[3], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="0,0,5,0" FontSize="15"/>
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 7">
+                    <RadioButton Checked="RadioButton_Checked" Content="fear" Width="120" IsChecked="{Binding possible_emotions[4], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="25,0,30,0" FontSize="15"/>
+                    <RadioButton Checked="RadioButton_Checked" Content="contempt" Width="120" IsChecked="{Binding possible_emotions[5], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="0,0,5,0" FontSize="15"/>
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 7">
+                    <RadioButton Checked="RadioButton_Checked" Content="anger" Width="120"  IsChecked="{Binding possible_emotions[6], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="25,0,30,0" FontSize="15"/>
+                    <RadioButton Checked="RadioButton_Checked" Content="disgust" Width="120" IsChecked="{Binding possible_emotions[7], Mode=TwoWay}"
+                                 GroupName="emotions" Margin="0,0,5,0" FontSize="15"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
