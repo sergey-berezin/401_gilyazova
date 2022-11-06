@@ -76,7 +76,6 @@ namespace emotions_wpf
             {
                 using Image<Rgb24> image = Image.Load<Rgb24>(path);
                 var result = await EmotionFerPlusModel.ProcessAsync(image, ctn.Token);
-                //var ordered = result.OrderByDescendingOrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
                 listImages.Add(new ImageInfo(path, result));
             }
             catch (OperationCanceledException)
@@ -94,6 +93,7 @@ namespace emotions_wpf
 
 
                     IsCalculation = true;
+                    this.LoadButton.IsEnabled = false;
                     foreach (var path in ImagesPath)
                     {
                         await GetEmotions(path, cts);
@@ -105,6 +105,7 @@ namespace emotions_wpf
             finally
             {
                 IsCalculation = false;
+                this.LoadButton.IsEnabled = true;
                 photos.Focus();
             }
         }
@@ -146,7 +147,5 @@ namespace emotions_wpf
         {
             return IsCalculation;
         }
-
-      
     }
 }
