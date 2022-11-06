@@ -62,7 +62,7 @@
                 <Grid Margin="0,48,0,48" Grid.RowSpan="2">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button Content="Choose a file" x:Name="a" Height="30" Width="180" Click="OpenImage"/>
-                        <Button Content="Load" x:Name="e" Height="30" Width="180" Click="Upload"/>
+                        <Button Content="Load" x:Name="LoadButton" Height="30" Width="180" Click="Upload" />
                     </StackPanel>
                 </Grid>
 
