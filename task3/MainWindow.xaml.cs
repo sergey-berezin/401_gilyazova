@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp.Advanced;
 using System.Runtime.InteropServices;
 
+
 namespace emotions_wpf
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
@@ -60,7 +61,6 @@ namespace emotions_wpf
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Multiselect = true;
-            ofd.InitialDirectory = System.IO.Path.GetFullPath("../../../../Images");
 
             if (ofd.ShowDialog() == true)
             {
@@ -108,9 +108,9 @@ namespace emotions_wpf
 
                 }
             }
-            catch (OperationCanceledException)
+            catch(Exception ex)
             {
-                throw;
+                MessageBox.Show(ex.ToString());
             }
         }
         private async void Upload(object sender, RoutedEventArgs? e = null)
@@ -128,7 +128,6 @@ namespace emotions_wpf
                     ImagesPath = null;
                 }
             }
-            catch { }
             finally
             {
                 IsCalculation = false;

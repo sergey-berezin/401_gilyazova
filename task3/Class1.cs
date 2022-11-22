@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
+using System.IO;
 
 
 namespace emotions_wpf
@@ -17,8 +18,8 @@ namespace emotions_wpf
         public ICollection<Emotion_> emotions { get; set; }
         public ImageInfo(string path)
         {
-            string[] splittingPath = path.Split("\\");
-            filename = splittingPath[splittingPath.Length - 1];
+            //string[] splittingPath = path.Split("\\");
+            filename = Path.GetFileName(path);
             this.path = path;
             emotions = new List<Emotion_>();
         }
