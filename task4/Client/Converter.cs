@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 using System.Linq;
-using EmotionFerPlus;
 using Client;
 
 namespace Client;

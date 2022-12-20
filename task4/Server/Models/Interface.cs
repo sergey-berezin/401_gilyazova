@@ -26,7 +26,7 @@ namespace Server
         Task<bool> DeleteAllImages();
     }
 
-    public class InMemoryDb : IImagesDb
+    public class ServerDb : IImagesDb
     {
         private Emotion EmotionFerPlusModel = new Emotion();
         private CancellationTokenSource cts = new CancellationTokenSource();

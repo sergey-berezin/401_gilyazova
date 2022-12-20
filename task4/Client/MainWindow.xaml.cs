@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using EmotionFerPlus;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -31,7 +30,6 @@ namespace Client
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private Emotion EmotionFerPlusModel = new Emotion();
         private CancellationTokenSource cts = new CancellationTokenSource();
         private ObservableCollection<ImageInfo> listImages = new ObservableCollection<ImageInfo>();
 
@@ -64,6 +62,8 @@ namespace Client
             Clear = new RelayCommand(_ => { HandlerClear(this); }, CanClear);
             Cancel = new RelayCommand(_ => { HandlerCancel(this); }, CanCancel);
             DeleteImageFromDB = new RelayCommand(_ => { DoDelete(this); }, CanDelete);
+            _RetryPolicy = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(MaxRetries, times =>
+                TimeSpan.FromMilliseconds(3000));
         }
 
 
@@ -78,8 +78,6 @@ namespace Client
                 ImagesPath = new string[ofd.FileNames.Length];
                 for (int i = 0; i < ImagesPath.Length; i++)
                     ImagesPath[i] = ofd.FileNames[i];
-                _RetryPolicy = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(MaxRetries, times =>
-                TimeSpan.FromMilliseconds(3000));
             }
             
         }
@@ -201,12 +199,15 @@ namespace Client
                         {
                             throw new Exception("No images in database yet!");
                         }
-                        foreach (int val in values)
+                        await _RetryPolicy.ExecuteAsync(async () =>
                         {
-                            var response_inner = await httpClient.GetAsync($"{url}/images/{val}");
-                            ImageInfo item = await response_inner.Content.ReadFromJsonAsync<ImageInfo>();
-                            listImages.Add(item);
-                        }
+                            foreach (int val in values)
+                            {
+                                var response_inner = await httpClient.GetAsync($"{url}/images/{val}");
+                                ImageInfo item = await response_inner.Content.ReadFromJsonAsync<ImageInfo>();
+                                listImages.Add(item);
+                            }
+                        });
                     }
                     else
                     {
